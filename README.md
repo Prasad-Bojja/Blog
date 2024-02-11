@@ -31,7 +31,7 @@ python manage.py createsuperuser
 python manage.py runserver
 
 
-7. Access the application at [http://localhost:8000](http://localhost:8000)
+7. Access the application at [[http://localhost:8000](http://localhost:8000)](https://prasadsharanappa.pythonanywhere.com/)
 
 ## Usage
 

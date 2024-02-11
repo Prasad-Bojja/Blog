@@ -20,6 +20,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('home.urls')),
-    path('froala_editor',include('froala_editor.urls')),
+     path('tinymce/', include('tinymce.urls')),
     path('',include('authentication.urls')),
 ]

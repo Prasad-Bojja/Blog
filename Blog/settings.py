@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    'froala_editor',
+    'tinymce',
     'authentication',
 ]
 
@@ -136,3 +136,12 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': 840,
+    'menubar': True,
+    'plugins': 'advlist autolink lists link image charmap print preview anchor',
+    'toolbar': 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | link image',
+    'content_css': '//www.tiny.cloud/css/codepen.min.css'
+}

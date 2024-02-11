@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('home.urls')),
     path('froala_editor',include('froala_editor.urls')),
+    path('',include('authentication.urls')),
 ]

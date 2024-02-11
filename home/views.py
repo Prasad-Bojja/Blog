@@ -4,22 +4,12 @@ from .form import *
 from django.contrib.auth import logout
 from django.http import*
 from .models import*
-
-def logout_view(request):
-    logout(request)
-    return redirect('/')
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
     context = {'blogs': BlogModel.objects.all()}
     return render(request, 'blog/home.html', context)
-
-
-def login_view(request):
-    return render(request, 'blog/login.html')
-
-def register_view(request):
-    return render(request, 'blog/register.html')
 
 
 
@@ -44,6 +34,7 @@ def see_blog(request):
     return render(request, 'blog/see_blog.html', context)
 
 
+@login_required(login_url='/login/')
 def add_blog(request):
     context = {}
     if request.method == 'POST':
@@ -56,7 +47,7 @@ def add_blog(request):
             image = form.cleaned_data['image']
             # Create a new blog object
             BlogModel.objects.create(user=user, title=title, content=content, image=image)
-            return redirect('see_blog')  # Redirect to a page displaying all blogs or a success page
+            return redirect('/see_blog/')  # Redirect to a page displaying all blogs or a success page
     else:
         form = BlogForm()
     context['form'] = form
@@ -64,6 +55,7 @@ def add_blog(request):
 
 
 
+@login_required(login_url='/login/')
 def blog_update(request, slug):
     context = {}
     try:
@@ -85,7 +77,7 @@ def blog_update(request, slug):
             blog_obj.image = image
             blog_obj.save()
 
-            return redirect('blog_detail', slug=blog_obj.slug)
+            return redirect('/blog_detail/', slug=blog_obj.slug)
 
         context['blog_obj'] = blog_obj
         context['form'] = form
@@ -97,6 +89,7 @@ def blog_update(request, slug):
     return render(request, 'blog/blog_update.html', context)
 
 
+@login_required(login_url='/login/')
 def blog_delete(request, id):
     try:
         blog_obj = BlogModel.objects.get(id=id)
@@ -107,32 +100,7 @@ def blog_delete(request, id):
     except Exception as e:
         print(e)
 
-    return redirect('/see-blog/')
+    return redirect('/see_blog/')
 
 
 
-def verify(request, token):
-    try:
-        profile_obj = Profile.objects.filter(token=token).first()
-
-        if profile_obj:
-            profile_obj.is_verified = True
-            profile_obj.save()
-        return redirect('/login/')
-
-    except Exception as e:
-        print(e)
-
-    return redirect('/')
-
-'''def email_verification(request, token):
-    try:
-        profile = Profile.objects.get(token=token, is_verified=False)
-        user = get_user_model().objects.get(id=profile.user.id)
-        profile.is_verified = True
-        profile.save()
-        user.is_active = True  # You can set any additional activation logic here
-        user.save()
-        return render(request, 'verification_success.html')
-    except Profile.DoesNotExist:
-        return render(request, 'verification_failure.html')'''
